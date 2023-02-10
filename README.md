@@ -262,6 +262,10 @@ export default function toJsx(
 ## Plugins
 ### `WrapLines` plugin
 Wrap each line in `<span>`. Lines can be styled with `wrapLines` property of `Options` object passed to `highlight`, `react` or `jsx` function.
+> [!IMPORTANT] 
+> This plugin only groups element. If a parsing engine creates
+> an element, which already includes multiple lines, 
+> the plugin will not split it!
 
 #### Usage
 ```ts
@@ -300,4 +304,27 @@ const markup = jsx(text, {
   // autolink and assign provided classes to every resulting `<a>`
   autolink: 'text-indigo-500 no-underline',
 })
+```
+
+## Themes 
+There are two options for styling parsed code:
+- use themes from `prism.js` / `highlight.js` directly
+- use themes from this library: `themes/prism` / `themes/hljs`
+  They are identical to the originals with few exceptions:
+  - each theme is wrapped in `@layer` CSS directive, so it has lowest specificity and can be overriden by utility classes
+  - some CSS rules in `prism` themes are additionally scoped with `.prism` class so they don't clash with `hljs` theme when used at the same time:
+```css
+// https://github.com/PrismJS/prism/blob/master/themes/prism.css
+code[class*="language-"],
+pre[class*="language-"] {
+	color: black;
+     ...
+
+
+// ./themes/prism/default.css
+@layer prism-theme {
+  code.prism[class*="language-"],
+  pre.prism[class*="language-"] {
+    color: black;
+     ...
 ```
