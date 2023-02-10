@@ -1,0 +1,5 @@
+@layer prism-theme {
+  .foo {
+    color: red;
+  }
+}
