@@ -6,7 +6,7 @@ import prismRust from "refractor/lang/rust";
 
 import hljsLua from "highlight.js/lib/languages/lua";
 
-import { prism, hljs, highlight } from "../core";
+import { prism, hljs, highlight } from "../modules/core";
 prism.registerLanguage(prismTs);
 
 const isHastRoot = (obj) =>

@@ -1,5 +1,5 @@
-export type { Options } from './core';
-export { prism, hljs, highlight } from './core';
-export { default as react } from './react';
-export { default as jsx } from './jsx';
-export { default as html } from './html';
+export type { Options } from './modules/core';
+export { prism, hljs, highlight } from './modules/core';
+export { default as react } from './modules/react';
+export { default as jsx } from './modules/jsx';
+export { default as html } from './modules/html';
