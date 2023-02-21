@@ -93,14 +93,6 @@ export const hljs = {
 
   hljs.registerLanguage(javascript, 'javascript'); `
       );
-      // console.warn(
-      // `Language '${language}' isn't registered in '${this.displayName}'.
-      // To register a language for '${this.displayName}':
-
-      //   import { ${this.displayName} } from '${LIB_PATH}';
-      //   import javascript from "highlight.js/lib/languages/javascript";
-
-      //   hljs.registerLanguage(javascript, 'javascript');`);
     }
     return root;
   },
@@ -138,7 +130,7 @@ export type Options = {
   codeClass?: ClassName;
 };
 
-const defaults: Required<Options> & { reset(): void } = {
+export const defaults: Required<Options> & { reset(): void } = {
   parsingEngine: "prism",
   language: "text",
   wrapLines: false,
@@ -191,8 +183,6 @@ export function highlight(
   // console.log(root)
   return root;
 }
-
-highlight.defaults = defaults;
 
 function resolveOptions(
   languageOrOptions: string | Options

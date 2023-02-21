@@ -1,15 +1,10 @@
-import { jsx, highlight } from "../index";
+import { jsx } from "../index";
 
 describe(`jsx(text: string, langOrOptions: string | Options): string`, () => {
   it(`should return empty string if 'text' is empty, null or undefined`, () => {
     expect(jsx("")).toEqual("");
     expect(jsx(null)).toEqual("");
     expect(jsx()).toEqual("");
-  });
-
-  it(`should have the same 'default' property as 'highlight'`, () => {
-    expect(jsx.defaults).not.toBeUndefined();
-    expect(jsx.defaults).toBe(highlight.defaults);
   });
 
   const text = `// http://example.com/foo/bar?a=1&b=2#baz

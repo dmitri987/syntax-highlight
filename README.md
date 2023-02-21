@@ -54,12 +54,9 @@ const hast = highlight(text, {
 })
 
 // to change global defaults you can 
-// use any of imported functions like this:
-highlight.defaults.parsingEngine = 'hljs';
-jsx.defaults.language = 'js';
-html.defaults.wrapLines = 'ml-4';
-react.defaults.autolink = true;
-// see 'defaults' section
+import { defaults } from './index'
+
+defaults.engine = 'hljs'
 ```
 
 ### Types
@@ -132,19 +129,14 @@ type Options = {
 };
 ```
 
-#### `defaults` property
-With `highlight.defaults` you can set default Options for all `highlight` calls. `defaults.reset()` will reset to initial defaults.
+#### `defaults` object
+With `defaults` you can set default Options for all `highlight`/`react`/`jsx`/`html` calls. 
+`defaults.reset()` will reset to initial defaults.
 ```ts
-highlight.defaults.parsingEngine = 'hljs';
-highlight.defaults.reset(); // now `parsingEngine` is 'prism' again
-```
+import { defaults } from './index'
 
-`react`, `jsx` and `html` all expose `defaults` property from `highlight`.
-```js
-// so for example this
-react.defaults.preClass = 'w-auto';
-// is equivalent to this
-highlight.defaults.preClass = 'w-auto';
+defaults.parsingEngine = 'hljs';
+defaults.reset(); // now `parsingEngine` is 'prism' again
 ```
 
 ### Languages
@@ -302,7 +294,7 @@ function html(
 
 ## Plugins
 ### `WrapLines` plugin
-Wrap each line in `<span>`. Lines can be styled with `wrapLines` property in `{fnc}.defaults` or `Options` argument passed to `highlight`, `react`, `jsx` or `html`.
+Wrap each line in `<span>`. Lines can be styled with `wrapLines` property in `defaults` or `Options` argument passed to `highlight`, `react`, `jsx` or `html`.
 > [!IMPORTANT] 
 > This plugin only groups element. If a parsing engine creates
 > an element, which already includes multiple lines, 

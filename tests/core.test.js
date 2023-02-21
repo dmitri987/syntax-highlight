@@ -6,7 +6,7 @@ import prismRust from "refractor/lang/rust";
 
 import hljsLua from "highlight.js/lib/languages/lua";
 
-import { prism, hljs, highlight } from "../modules/core";
+import { prism, hljs, highlight, defaults } from "../modules/core";
 prism.registerLanguage(prismTs);
 
 const isHastRoot = (obj) =>
@@ -171,22 +171,20 @@ describe(`syntax-highlight core functions`, () => {
     });
   });
 
+  describe(`defaults`, () => {
+    it(`defaults should be sealed (can not add or remove properties, but can change their values)`, () => {
+      expect(Object.isSealed(defaults)).toBe(true);
+    });
+
+    it(`defaults.reset() should reset defaults to initial state`, () => {
+      defaults.language = "foo";
+      expect(defaults.language).toBe("foo");
+      defaults.reset();
+      expect(defaults.language).toBe("text");
+    });
+  });
+
   describe(`highligh(text: string, options: string | Options)`, () => {
-    it(`default settings for 'highlight' should be accessible by 'highlight.defaults'`, () => {
-      expect(highlight.defaults).toBeInstanceOf(Object);
-    });
-
-    it(`highlight.defaults should be sealed (can not add or remove properties, but can change their values)`, () => {
-      expect(Object.isSealed(highlight.defaults)).toBe(true);
-    });
-
-    it(`highlight.defaults.reset() should reset defaults to initial state`, () => {
-      highlight.defaults.language = "foo";
-      expect(highlight.defaults.language).toBe("foo");
-      highlight.defaults.reset();
-      expect(highlight.defaults.language).toBe("text");
-    });
-
     it(`highlight with empty, null or undefined 'text' should return null`, () => {
       expect(highlight(null, "html")).toBe(null);
       expect(highlight(undefined, "html")).toBe(null);
@@ -203,19 +201,19 @@ describe(`syntax-highlight core functions`, () => {
     });
 
     it(`both <pre> and <code> elements should have .language-{name} and .{parsingEnging} classes`, () => {
-      highlight.defaults.parsingEngine = "prism";
+      defaults.parsingEngine = "prism";
       let r = highlight("some text", "text");
       expect(r.children[0].properties.className).toMatch(/language-text/);
       expect(r.children[0].properties.className).toMatch(/prism/);
 
-      highlight.defaults.parsingEngine = "hljs";
+      defaults.parsingEngine = "hljs";
       r = highlight("some text", "html");
       expect(r.children[0].properties.className).toMatch(/language-html/);
       expect(r.children[0].properties.className).toMatch(/hljs/);
     });
 
     it(`highlight(text, language) should use 'prism' as default 'parsingEngine'`, () => {
-      highlight.defaults.reset();
+      defaults.reset();
       const r = highlight("var x = 42;", "js");
       expect(r.children[0].properties.className).toMatch(/prism/);
       expect(r.children[0].properties.className).not.toMatch(/hljs/);
@@ -245,11 +243,11 @@ describe(`syntax-highlight core functions`, () => {
       expect(r1).toEqual(r2);
     });
 
-    it(`highlight(text) should use the default language (highlight.defaults.language)`, () => {
-      highlight.defaults.language = "html";
+    it(`highlight(text) should use the default language (defaults.language)`, () => {
+      defaults.language = "html";
       const r = highlight("<div></div>");
       expect(r.children[0].properties.className).toMatch(/language-html/);
-      highlight.defaults.reset();
+      defaults.reset();
     });
 
     it(`highlight() should return raw text wrapped in pre>code when used with unregistered language`, () => {
@@ -261,13 +259,13 @@ describe(`syntax-highlight core functions`, () => {
     });
 
     it(`highlight() should return raw text wrapped in pre>code when used with default unregistered language`, () => {
-      highlight.defaults.language = "sojsodjfodjfj";
+      defaults.language = "sojsodjfodjfj";
       const r = highlight("<div></div>");
       expect(r.children[0].properties.className).toMatch(/language-text/);
       expect(r.children[0].children[0].children).toHaveLength(1);
       expect(r.children[0].children[0].children[0].type).toBe("text");
       expect(r.children[0].children[0].children[0].value).toBe("<div></div>");
-      highlight.defaults.reset();
+      defaults.reset();
     });
 
     it(`'className' property of every HastElement in the tree returned by highlight() should be a string of class names divided with one or more whitespaces`, () => {
@@ -324,7 +322,7 @@ describe(`syntax-highlight core functions`, () => {
     });
 
     it(`'wrapLines' should be false by default`, () => {
-      highlight.defaults.reset();
+      defaults.reset();
       const r = highlight(
         `first
         second
@@ -453,18 +451,21 @@ function f() {
       );
       const content = r.children[0].children[0].children;
       let count = 0;
-      content.forEach(line => {
-        if (line?.children[0]?.type === 'text' && line?.children[1]?.type === 'text') {
+      content.forEach((line) => {
+        if (
+          line?.children[0]?.type === "text" &&
+          line?.children[1]?.type === "text"
+        ) {
           count++;
         }
-      })
+      });
       expect(count).toBe(0);
-    })
+    });
   });
 
   describe(`autolink plugin: highlight(text, { autolink: boolean | string })`, () => {
     it(`highlight() should not use 'autolink' by default`, () => {
-      highlight.defaults.reset();
+      defaults.reset();
       const r = highlight(`https://google.com`);
       const content = r.children[0].children[0].children;
       expect(content).toHaveLength(1);

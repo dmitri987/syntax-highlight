@@ -1,15 +1,10 @@
-import { html, highlight } from "../index";
+import { html } from "../index";
 
 describe(`html(text: string, langOrOptions: string | Options): string`, () => {
   it(`should return empty string if 'text' is empty, null or undefined`, () => {
     expect(html("")).toEqual("");
     expect(html(null)).toEqual("");
     expect(html()).toEqual("");
-  });
-
-  it(`should have the same 'default' property as 'highlight'`, () => {
-    expect(html.defaults).not.toBeUndefined();
-    expect(html.defaults).toBe(highlight.defaults);
   });
 
   const text = `// http://example.com/foo/bar?a=1&b=2#baz
