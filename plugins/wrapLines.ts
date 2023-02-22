@@ -1,4 +1,4 @@
-import { HastElement, HastRoot, HastText } from "../core";
+import { HastElement, HastRoot, HastText } from "../modules/core";
 
 /*
  * Caveat: it will only group top-level elements

@@ -1,4 +1,4 @@
-import { HastElement, HastRoot, HastText } from "../core";
+import { HastElement, HastRoot, HastText } from "../modules/core";
 
 function urlToLink(
   node: HastText,
