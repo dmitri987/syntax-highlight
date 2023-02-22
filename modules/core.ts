@@ -42,14 +42,16 @@ export const prism = {
       root = refractor.highlight(text, language);
     } catch (err) {
       root = rootWithRawText(text);
-      warn(
-        language,
-        this.displayName,
-        `
+      if (language !== "text") {
+        warn(
+          language,
+          this.displayName,
+          `
   import javascript from "refractor/lang/javascript";
 
   prism.registerLanguage(javascript); `
-      );
+        );
+      }
     }
     return root;
   },
@@ -85,14 +87,16 @@ export const hljs = {
       root = lowlight.highlight(language, text);
     } catch (err) {
       root = rootWithRawText(text);
-      warn(
-        language,
-        this.displayName,
-        `
+      if (language !== "text") {
+        warn(
+          language,
+          this.displayName,
+          `
   import javascript from "highlight.js/lib/languages/javascript";
 
   hljs.registerLanguage(javascript, 'javascript'); `
-      );
+        );
+      }
     }
     return root;
   },
@@ -167,13 +171,13 @@ export function highlight(
 
   stringifyAllClassNames(root);
 
-  if (wrapLines || typeof wrapLines === 'string') {
+  if (wrapLines || typeof wrapLines === "string") {
     const lineClassName =
       typeof wrapLines === "string" && wrapLines !== "" ? wrapLines : undefined;
     wrapLinesPlugin(root, lineClassName);
   }
 
-  if (autolink || typeof autolink === 'string') {
+  if (autolink || typeof autolink === "string") {
     const linkClassName =
       typeof autolink === "string" && autolink !== "" ? autolink : undefined;
     autolinkPlugin(root, linkClassName);
